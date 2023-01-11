@@ -25,6 +25,19 @@ namespace Offset
 		_int64 hasKilledThisRound = 0x2EC; // bool
 	}
 
+	namespace LocalPlayer
+	{
+		_int64 Player = 0x18; // PlayerController
+		_int64 fogOfWar = 0x20; // FogOfWarHandler
+	}
+
+	namespace FogOfWarHandler
+	{
+		_int64 layerMask = 0x18; // LayerMask (int)
+		_int64 baseViewDistance = 0x2C; // float
+		_int64 viewDistanceMultiplier = 0x38; // float
+		_int64 targetPlayerSet = 0x50; // bool
+	}
 }
 
 namespace Role
@@ -101,187 +114,311 @@ namespace Role
 		Tracker = 67
 	};
 
-	void GetNameById(int id, LPCSTR str)
+	void GetNameById(int id, const wchar_t* str)
 	{
 		switch (id)
 		{
 		case None:
-			str = u8"空";
+			str = L"空";
 			break;
 		case Goose:
 		case GHGoose:
 		case HNSGoose:
 		case FPGoose:
-			str = u8"鹅";
+			str = L"鹅";
 			break;
 		case Duck:
 		case GHDuck:
 		case HNSDuck:
 		case DNDDuck:
-			str = u8"鸭";
+			str = L"鸭";
 			break;
 		case Dodo:
-			str = u8"呆呆鸟";
+			str = L"呆呆鸟";
 			break;
 		case Bounty:
 		case GHBounty:
 		case HNSBounty:
-			str = u8"肉汁";
+			str = L"肉汁";
 			break;
 		case Mechanic:
-			str = u8"Mechanic"; // 已移除
+			str = L"Mechanic"; // 已移除
 			break;
 		case Vigilante:
-			str = u8"正义使者";
+			str = L"正义使者";
 			break;
 		case Cannibal:
-			str = u8"食鸟鸭";
+			str = L"食鸟鸭";
 			break;
 		case Morphling:
 		case DNDMorphling:
-			str = u8"变形";
+			str = L"变形";
 			break;
 		case Sheriff:
-			str = u8"警长";
+			str = L"警长";
 			break;
 		case Silencer:
-			str = u8"静语者";
+			str = L"静语者";
 			break;
 		case Canadian:
-			str = u8"加拿大鹅";
+			str = L"加拿大鹅";
 			break;
 		case LoverDuck:
-			str = u8"恋人[鸭]";
+			str = L"恋人[鸭]";
 			break;
 		case LoverGoose:
-			str = u8"恋人[鹅]";
+			str = L"恋人[鹅]";
 			break;
 		case Vulture:
 		case DNDVulture:
-			str = u8"秃鹫";
+			str = L"秃鹫";
 			break;
 		case Professional:
-			str = u8"专业杀手";
+			str = L"专业杀手";
 			break;
 		case Spy:
-			str = u8"间谍";
+			str = L"间谍";
 			break;
 		case Mimic:
-			str = u8"模仿者";
+			str = L"模仿者";
 			break;
 		case Detective:
-			str = u8"侦探";
+			str = L"侦探";
 			break;
 		case Pigeon:
-			str = u8"鸽子";
+			str = L"鸽子";
 			break;
 		case Birdwatcher:
-			str = u8"观鸟者";
+			str = L"观鸟者";
 			break;
 		case Assassin:
-			str = u8"刺客";
+			str = L"刺客";
 			break;
 		case Falcon:
 		case DNDFalcon:
-			str = u8"猎鹰";
+			str = L"猎鹰";
 			break;
 		case Hitman:
-			str = u8"雇佣杀手";
+			str = L"雇佣杀手";
 			break;
 		case Bodyguard:
-			str = u8"保镖";
+			str = L"保镖";
 			break;
 		case Snitch:
-			str = u8"告密者";
+			str = L"告密者";
 			break;
 		case Politician:
-			str = u8"政治家";
+			str = L"政治家";
 			break;
 		case Locksmith:
-			str = u8"锁匠";
+			str = L"锁匠";
 			break;
 		case Mortician:
-			str = u8"殡仪员";
+			str = L"殡仪员";
 			break;
 		case Celebrity:
-			str = u8"网红";
+			str = L"网红";
 			break;
 		case Party:
-			str = u8"派对";
+			str = L"派对";
 			break;
 		case Demolitionist:
-			str = u8"爆炸王";
+			str = L"爆炸王";
 			break;
 		case DuelingDodo:
-			str = u8"决斗呆呆鸟";
+			str = L"决斗呆呆鸟";
 			break;
 		case ExploreGoose:
-			str = u8"ExploreGoose"; // 未知
+			str = L"ExploreGoose"; // 未知
 			break;
 		case TTVampire:
-			str = u8"吸血鬼";
+			str = L"吸血鬼";
 			break;
 		case TTPeasant:
-			str = u8"村民";
+			str = L"村民";
 			break;
 		case TTThrall:
 		case TTEThrall:
-			str = u8"鬼奴";
+			str = L"鬼奴";
 			break;
 		case Spectator:
-			str = u8"旁观";
+			str = L"旁观";
 			break;
 		case IdentityThief:
-			str = u8"身份窃贼";
+			str = L"身份窃贼";
 			break;
 		case Adventurer:
-			str = u8"冒险家";
+			str = L"冒险家";
 			break;
 		case Avenger:
-			str = u8"复仇者";
+			str = L"复仇者";
 			break;
 		case Ninja:
-			str = u8"忍者";
+			str = L"忍者";
 			break;
 		case Undertaker:
-			str = u8"丧葬者";
+			str = L"丧葬者";
 			break;
 		case Snoop:
-			str = u8"Snoop"; // 已移除
+			str = L"Snoop"; // 已移除
 			break;
 		case Esper:
-			str = u8"超能力";
+			str = L"超能力";
 			break;
 		case Invisibility:
-			str = u8"隐形者";
+			str = L"隐形者";
 			break;
 		case Astral:
-			str = u8"星界行者";
+			str = L"星界行者";
 			break;
 		case Pelican:
-			str = u8"鹈鹕";
+			str = L"鹈鹕";
 			break;
 		case TTMummy:
-			str = u8"木乃伊";
+			str = L"木乃伊";
 			break;
 		case SerialKiller:
-			str = u8"连环杀手";
+			str = L"连环杀手";
 			break;
 		case Engineer:
-			str = u8"工程师";
+			str = L"工程师";
 			break;
 		case Warlock:
-			str = u8"术士";
+			str = L"术士";
 			break;
 		case StreetUrchin:
-			str = u8"流浪儿童";
+			str = L"流浪儿童";
 			break;
 		case Tracker:
-			str = u8"追踪器";
+			str = L"追踪器";
 			break;
 		default:
-			str = u8"未知";
+			str = L"未知";
 			break;
+		}
+	}
+}
+
+namespace MenuData
+{
+	struct Menu_T
+	{
+		BOOL PlayerInfo;
+		BOOL NoFog;
+		BOOL SuperSpeed;
+		BOOL NoCooldown;
+		BOOL NoCollider;
+	};
+
+	Menu_T Menu = { TRUE, FALSE, FALSE, FALSE, FALSE };
+}
+
+namespace GameData
+{
+	PVOID BaseModule = NULL;
+	PVOID UnityPlayer = NULL;
+	PVOID GameAssembly = NULL;
+
+	struct OtherPlayer_T
+	{
+		BOOL IsRoleSet;
+		WCHAR Name[128];
+		WCHAR Role[128];
+	};
+
+	OtherPlayer_T OtherPlayer[16] = { };
+
+	static void UpdateGameData()
+	{
+		__try
+		{
+			PCHAR LocalPlayerPtr1 = *(PCHAR*)((PCHAR)GameAssembly + 0x3C3A608);
+			if (LocalPlayerPtr1)
+			{
+				PCHAR LocalPlayerPtr2 = *(PCHAR*)(LocalPlayerPtr1 + 0xB8);
+				if (LocalPlayerPtr2)
+				{
+					PCHAR LocalPlayer = *(PCHAR*)(LocalPlayerPtr2 + 0x20);
+					if (LocalPlayer)
+					{
+						if (MenuData::Menu.NoFog)
+						{
+							PCHAR FogOfWarHandler = *(PCHAR*)(LocalPlayer + Offset::LocalPlayer::fogOfWar);
+							if (FogOfWarHandler)
+							{
+								if (*(PBOOL)(FogOfWarHandler + Offset::FogOfWarHandler::targetPlayerSet))
+								{
+									*(PINT)(FogOfWarHandler + Offset::FogOfWarHandler::layerMask) = 0;
+									if (*(PFLOAT)(FogOfWarHandler + Offset::FogOfWarHandler::viewDistanceMultiplier) != 0.f)
+									{
+										*(PFLOAT)(FogOfWarHandler + Offset::FogOfWarHandler::baseViewDistance) = 7.5f / *(PFLOAT)(FogOfWarHandler + Offset::FogOfWarHandler::viewDistanceMultiplier);
+									}
+								}
+							}
+						}
+						if (MenuData::Menu.SuperSpeed)
+						{
+
+						}
+						if (MenuData::Menu.NoCooldown)
+						{
+
+						}
+						if (MenuData::Menu.NoCollider)
+						{
+
+						}
+					}
+					else
+					{
+						return;
+					}
+				}
+			}
+
+			PCHAR OtherPlayerPtr1 = *(PCHAR*)((PCHAR)GameAssembly + 0x3C869B0);
+			if (OtherPlayerPtr1)
+			{
+				PCHAR OtherPlayerPtr2 = *(PCHAR*)(OtherPlayerPtr1 + 0xB8);
+				if (OtherPlayerPtr2)
+				{
+					PCHAR OtherPlayerPtr3 = *(PCHAR*)(OtherPlayerPtr2 + 0x20);
+					if (OtherPlayerPtr3)
+					{
+						PCHAR OtherPlayerControllerArray = *(PCHAR*)(OtherPlayerPtr3 + 0x18);
+						if (OtherPlayerControllerArray)
+						{
+							for (SIZE_T Index = 0; Index < 16; Index++)
+							{
+								PCHAR OtherPlayerController = *(PCHAR*)(OtherPlayerControllerArray + 0x30 + Index * 0x18);
+								if (OtherPlayerController)
+								{
+									OtherPlayer[Index].IsRoleSet = *(PBOOL)(OtherPlayerController + Offset::PlayerController::playerRoleSet);
+									if (!OtherPlayer[Index].IsRoleSet)
+									{
+										continue;
+									}
+
+									PCHAR NickNameObject = *(PCHAR*)(OtherPlayerController + Offset::PlayerController::nickname);
+									INT NickNameLenght = *(PINT)(NickNameObject + 0x10);
+									if (NickNameLenght < 64)
+									{
+										WCHAR NickName[128] = { 0 };
+										memcpy(NickName, NickNameObject + 0x14, NickNameLenght * sizeof(WCHAR));
+										memcpy(OtherPlayer[Index].Name, NickName, 128 * sizeof(WCHAR));
+									}
+
+									PCHAR RoleObject = *(PCHAR*)(OtherPlayerController + Offset::PlayerController::playerRole);
+									Role::GetNameById(*(PINT)(RoleObject + 0x10), OtherPlayer[Index].Role);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		__except(EXCEPTION_EXECUTE_HANDLER)
+		{
 		}
 	}
 }

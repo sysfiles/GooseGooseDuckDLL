@@ -9,10 +9,6 @@
 
 #include "GameData.h"
 
-PVOID BaseModule = NULL;
-PVOID UnityPlayer = NULL;
-PVOID GameAssembly = NULL;
-
 typedef HRESULT(STDMETHODCALLTYPE* PRESENT_T)(IDXGISwapChain*, UINT, UINT);
 
 PRESENT_T Present = NULL;
@@ -29,23 +25,26 @@ HRESULT STDMETHODCALLTYPE PresentHookFunc(IDXGISwapChain* pSwapChain, UINT SyncI
 
 VOID GooseGooseDuckMain()
 {
-	BaseModule = GetModuleHandle(NULL);
+	GameData::BaseModule = GetModuleHandle(NULL);
 
-	while (!UnityPlayer)
+	while (!GameData::UnityPlayer)
 	{
-		UnityPlayer = GetModuleHandle(L"UnityPlayer.dll");
+		GameData::UnityPlayer = GetModuleHandle(L"UnityPlayer.dll");
 		Sleep(1000);
 	}
 
-	while (!GameAssembly)
+	while (!GameData::GameAssembly)
 	{
-		GameAssembly = GetModuleHandle(L"GameAssembly.dll");
+		GameData::GameAssembly = GetModuleHandle(L"GameAssembly.dll");
 		Sleep(1000);
 	}
+
+	GameData::UnityPlayer = GameData::UnityPlayer;
+
 
 	Sleep(5000);
 
-	IDXGISwapChain* GameSwapChain = (IDXGISwapChain*)((PENCLAVE_ROUTINE)((ULONG_PTR)UnityPlayer + Offset::UnityPlayer::GetSwapChain))(0);
+	IDXGISwapChain* GameSwapChain = (IDXGISwapChain*)((PENCLAVE_ROUTINE)((ULONG_PTR)GameData::UnityPlayer + Offset::UnityPlayer::GetSwapChain))(0);
 
 	Present = (PRESENT_T)(*(VOID***)GameSwapChain)[8];
 
@@ -118,7 +117,7 @@ HRESULT STDMETHODCALLTYPE PresentHookFunc(IDXGISwapChain* pSwapChain, UINT SyncI
 			builder.AddRanges(io.Fonts->GetGlyphRangesVietnamese());
 			builder.BuildRanges(&ranges);
 
-			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyhbd.ttc", 16.0f, NULL, ranges.Data);
+			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyhbd.ttc", 20.0f, NULL, ranges.Data);
 			io.Fonts->Build();
 
 			ImGui::StyleColorsDark();
@@ -129,32 +128,33 @@ HRESULT STDMETHODCALLTYPE PresentHookFunc(IDXGISwapChain* pSwapChain, UINT SyncI
 
 	if (PresentInit)
 	{
+		GameData::UpdateGameData();
+
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		
 		ImGui::NewFrame();
 
-		ImGui::Begin(u8"玩家信息");
-		ImGui::SetWindowPos(ImVec2(20, 400), ImGuiCond_Always);
-		ImGui::SetWindowSize(ImVec2(350, 400), ImGuiCond_Always);
-		ImGui::Text(u8"[序号] 名字 | 身份 | 状态");
-		ImGui::Text(u8"[1] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[2] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[3] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[4] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[5] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[6] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[7] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[8] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[9] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[10] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[11] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[12] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[13] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[14] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[15] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::Text(u8"[16] %s | %s | %s", u8"null", u8"null", u8"null");
-		ImGui::End();
+		WCHAR StrBuffer[256] = { 0 };
+		CHAR U8Buffer[256] = { 0 };
+
+		if (MenuData::Menu.PlayerInfo)
+		{
+			ImGui::GetForegroundDrawList()->AddText(ImVec2(20, 400), IM_COL32_WHITE, u8"玩家信息");
+			ImGui::GetForegroundDrawList()->AddText(ImVec2(20, 420), IM_COL32_WHITE, u8"[序号] 名字 | 身份 | 状态");
+
+			for (SIZE_T PlayerInfoIndex = 0; PlayerInfoIndex < 16; PlayerInfoIndex++)
+			{
+				if (!GameData::OtherPlayer[PlayerInfoIndex].IsRoleSet)
+				{
+					continue;
+				}
+
+				wsprintf(StrBuffer, L"[%d] %s | %s | %s", PlayerInfoIndex, GameData::OtherPlayer[PlayerInfoIndex].Name, GameData::OtherPlayer[PlayerInfoIndex].Role, L"null");
+				WideCharToMultiByte(CP_UTF8, NULL, StrBuffer, -1, U8Buffer, sizeof(U8Buffer), NULL, NULL);
+				ImGui::GetForegroundDrawList()->AddText(ImVec2(20, (float)(440 + PlayerInfoIndex * 20)), IM_COL32_WHITE, U8Buffer);
+			}
+		}
 
 		ImGui::Render();
 
