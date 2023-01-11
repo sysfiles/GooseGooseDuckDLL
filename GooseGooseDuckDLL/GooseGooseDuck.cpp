@@ -138,10 +138,25 @@ HRESULT STDMETHODCALLTYPE PresentHookFunc(IDXGISwapChain* pSwapChain, UINT SyncI
 		WCHAR StrBuffer[256] = { 0 };
 		CHAR U8Buffer[256] = { 0 };
 
+		ImGui::Begin(u8"菜单");
+
+		ImGui::SetWindowSize(ImVec2(350.f, 500.f), ImGuiCond_Always);
+		ImGui::SetWindowPos(ImVec2(20.f, 50.f), ImGuiCond_Always);
+
+		ImGui::Checkbox(u8"玩家信息", (bool*)&MenuData::Menu.PlayerInfo);
+		ImGui::Checkbox(u8"去除迷雾", (bool*)&MenuData::Menu.NoFog);
+
+		ImGui::Checkbox(u8"超级加速", (bool*)&MenuData::Menu.SuperSpeed);
+		ImGui::Checkbox(u8"技能无冷却", (bool*)&MenuData::Menu.NoCooldown);
+		ImGui::Checkbox(u8"人物穿墙", (bool*)&MenuData::Menu.NoCollider);
+		ImGui::Checkbox(u8"强制移动", (bool*)&MenuData::Menu.ForceMove);
+
+		ImGui::End();
+
 		if (MenuData::Menu.PlayerInfo)
 		{
-			ImGui::GetForegroundDrawList()->AddText(ImVec2(20, 400), IM_COL32_WHITE, u8"玩家信息");
-			ImGui::GetForegroundDrawList()->AddText(ImVec2(20, 420), IM_COL32_WHITE, u8"[序号] 名字 | 身份 | 状态");
+			ImGui::GetForegroundDrawList()->AddText(ImVec2(20.f, 400.f), IM_COL32_WHITE, u8"玩家信息");
+			ImGui::GetForegroundDrawList()->AddText(ImVec2(20.f, 420.f), IM_COL32_WHITE, u8"[序号] 名字 | 身份 | 状态");
 
 			for (SIZE_T PlayerInfoIndex = 0; PlayerInfoIndex < 16; PlayerInfoIndex++)
 			{
@@ -152,7 +167,7 @@ HRESULT STDMETHODCALLTYPE PresentHookFunc(IDXGISwapChain* pSwapChain, UINT SyncI
 
 				wsprintf(StrBuffer, L"[%d] %s | %s | %s", PlayerInfoIndex, GameData::OtherPlayer[PlayerInfoIndex].Name, GameData::OtherPlayer[PlayerInfoIndex].Role, L"null");
 				WideCharToMultiByte(CP_UTF8, NULL, StrBuffer, -1, U8Buffer, sizeof(U8Buffer), NULL, NULL);
-				ImGui::GetForegroundDrawList()->AddText(ImVec2(20, (float)(440 + PlayerInfoIndex * 20)), IM_COL32_WHITE, U8Buffer);
+				ImGui::GetForegroundDrawList()->AddText(ImVec2(20, 440.f + PlayerInfoIndex * 20), IM_COL32_WHITE, U8Buffer);
 			}
 		}
 

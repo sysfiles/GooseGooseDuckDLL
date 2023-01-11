@@ -29,6 +29,7 @@ namespace Offset
 	{
 		_int64 Player = 0x18; // PlayerController
 		_int64 fogOfWar = 0x20; // FogOfWarHandler
+		_int64 disableMovement = 0x60; // bool
 	}
 
 	namespace FogOfWarHandler
@@ -308,9 +309,10 @@ namespace MenuData
 		BOOL SuperSpeed;
 		BOOL NoCooldown;
 		BOOL NoCollider;
+		BOOL ForceMove;
 	};
 
-	Menu_T Menu = { TRUE, FALSE, FALSE, FALSE, FALSE };
+	Menu_T Menu = { TRUE, FALSE, FALSE, FALSE, FALSE, FALSE};
 }
 
 namespace GameData
@@ -367,6 +369,10 @@ namespace GameData
 						if (MenuData::Menu.NoCollider)
 						{
 
+						}
+						if (MenuData::Menu.ForceMove)
+						{
+							*(PBOOL)(LocalPlayer + Offset::LocalPlayer::disableMovement) = FALSE;
 						}
 					}
 					else
