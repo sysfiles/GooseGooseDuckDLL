@@ -10,6 +10,7 @@
 #include "GameData.h"
 
 PVOID BaseModule = NULL;
+PVOID UnityPlayer = NULL;
 PVOID GameAssembly = NULL;
 
 typedef HRESULT(STDMETHODCALLTYPE* PRESENT_T)(IDXGISwapChain*, UINT, UINT);
@@ -30,52 +31,23 @@ VOID GooseGooseDuckMain()
 {
 	BaseModule = GetModuleHandle(NULL);
 
+	while (!UnityPlayer)
+	{
+		UnityPlayer = GetModuleHandle(L"UnityPlayer.dll");
+		Sleep(1000);
+	}
+
 	while (!GameAssembly)
 	{
 		GameAssembly = GetModuleHandle(L"GameAssembly.dll");
 		Sleep(1000);
 	}
 
-	WNDCLASSEX wc{ 0 };
-	wc.cbSize = sizeof(wc);
-	wc.lpfnWndProc = DefWindowProc;
-	wc.lpszClassName = L"Goose Goose Duck";
+	Sleep(5000);
 
-	if (!RegisterClassEx(&wc))
-	{
-		MessageBox(NULL, L"DX初始化失败 Step: 1", L"错误", MB_ICONWARNING);
-		ExitProcess(0);
-	}
+	IDXGISwapChain* GameSwapChain = (IDXGISwapChain*)((PENCLAVE_ROUTINE)((ULONG_PTR)UnityPlayer + Offset::UnityPlayer::GetSwapChain))(0);
 
-	HWND hWnd = CreateWindow(wc.lpszClassName, L"", WS_DISABLED, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
-
-	DXGI_SWAP_CHAIN_DESC swapChainDesc{ 0 };
-	swapChainDesc.BufferCount = 1;
-	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	swapChainDesc.OutputWindow = hWnd;
-	swapChainDesc.SampleDesc.Count = 1;
-	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	swapChainDesc.Windowed = TRUE;
-
-	D3D_FEATURE_LEVEL featureLevel;
-
-	IDXGISwapChain* pDummySwapChain = NULL;
-	ID3D11Device* pDummyDevice = NULL;
-
-	HRESULT hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, 0, NULL, 0, D3D11_SDK_VERSION, &swapChainDesc, &pDummySwapChain, &pDummyDevice, &featureLevel, NULL);
-	if (FAILED(hr))
-	{
-		DestroyWindow(swapChainDesc.OutputWindow);
-		UnregisterClass(wc.lpszClassName, (HINSTANCE)BaseModule);
-
-		MessageBox(NULL, L"DX初始化失败 Step: 2", L"错误", MB_ICONWARNING);
-		ExitProcess(0);
-	}
-
-	Present = (PRESENT_T)(*(VOID***)pDummySwapChain)[8];
+	Present = (PRESENT_T)(*(VOID***)GameSwapChain)[8];
 
 	PCHAR ReJmpAddr = NULL;
 
@@ -113,12 +85,6 @@ VOID GooseGooseDuckMain()
 		MessageBox(NULL, L"DX初始化失败 Step: 4", L"错误", MB_ICONWARNING);
 		ExitProcess(0);
 	}
-	
-	pDummySwapChain->Release();
-	pDummyDevice->Release();
-
-	DestroyWindow(swapChainDesc.OutputWindow);
-	UnregisterClass(wc.lpszClassName, (HINSTANCE)BaseModule);
 }
 
 HRESULT STDMETHODCALLTYPE PresentHookFunc(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags)

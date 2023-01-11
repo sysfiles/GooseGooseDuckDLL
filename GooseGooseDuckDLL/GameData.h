@@ -2,6 +2,11 @@
 
 namespace Offset
 {
+	namespace UnityPlayer
+	{
+		_int64 GetSwapChain = 0x759A30; // 48 83EC 28 E8 ???????? 48 8B80 20030000 4883C4 28 C3
+	}
+
 	namespace PlayerController
 	{
 		_int64 bodyCollider = 0xA8; // CapsuleCollider2D
