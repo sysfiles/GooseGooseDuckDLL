@@ -7,29 +7,44 @@ namespace Offset
 		_int64 GetSwapChain = 0x759A30; // 48 83EC 28 E8 ???????? 48 8B80 20030000 4883C4 28 C3
 	}
 
+	namespace GameAssembly
+	{
+		_int64 PlayerController = 0x3C98478;
+		_int64 LocalPlayer = 0x3C6B510;
+	}
+
+	namespace Class
+	{
+		_int64 StaticFields = 0xB8;
+	}
+
 	namespace PlayerController
 	{
+		_int64 Static_playersList = 0x10; // Dictionary<string, PlayerController>
+		_int64 Static_playersListWithAgoraIDs = 0x20; // Dictionary<int, PlayerController>
 		_int64 bodyCollider = 0xA8; // CapsuleCollider2D
-		_int64 isSilenced = 0xC1; // bool
-		_int64 isHelium = 0xC2; // bool
-		_int64 isInfected = 0xC3; // bool
-		_int64 inSmog = 0xC5; // bool
-		_int64 killedBy = 0xC8; // string
-		_int64 playerRole = 0xE8; // ptr
-		_int64 playerRoleSet = 0xF0; // bool
+		_int64 isSilenced = 0xD1; // bool
+		_int64 isHelium = 0xD2; // bool
+		_int64 isInfected = 0xD3; // bool
+		_int64 inSmog = 0xD5; // bool
+		_int64 killedBy = 0xD8; // string
+		_int64 playerRole = 0xF8; // ptr
+		_int64 playerRoleSet = 0x100; // bool
 		_int64 inVent = 0xF1; // bool
-		_int64 hasBomb = 0x134; // bool
-		_int64 isGhost = 0x188; // bool
-		_int64 timeOfDeath = 0x18C; // int
-		_int64 nickname = 0x1D0; // string
-		_int64 hasKilledThisRound = 0x2EC; // bool
+		_int64 hasBomb = 0x144; // bool
+		_int64 isGhost = 0x198; // bool
+		_int64 timeOfDeath = 0x19C; // int
+		_int64 nickname = 0x1E0; // string
+		_int64 hasKilledThisRound = 0x2FC; // bool
 	}
 
 	namespace LocalPlayer
 	{
+		_int64 Static_Instance = 0x0; // LocalPlayer
 		_int64 Player = 0x18; // PlayerController
 		_int64 fogOfWar = 0x20; // FogOfWarHandler
 		_int64 disableMovement = 0x60; // bool
+		_int64 Method_Update = 0xFA04C0; // void Update() { }
 	}
 
 	namespace FogOfWarHandler
@@ -115,186 +130,187 @@ namespace Role
 		Tracker = 67
 	};
 
-	void GetNameById(int id, const wchar_t* str)
+	void GetNameById(int id, wchar_t* str)
 	{
+		wchar_t name[16] = {0};
 		switch (id)
 		{
 		case None:
-			str = L"空";
+			wcscpy_s(str, 256, L"空");
 			break;
 		case Goose:
 		case GHGoose:
 		case HNSGoose:
 		case FPGoose:
-			str = L"鹅";
+			wcscpy_s(str, 256, L"鹅");
 			break;
 		case Duck:
 		case GHDuck:
 		case HNSDuck:
 		case DNDDuck:
-			str = L"鸭";
+			wcscpy_s(str, 256, L"鸭");
 			break;
 		case Dodo:
-			str = L"呆呆鸟";
+			wcscpy_s(str, 256, L"呆呆鸟");
 			break;
 		case Bounty:
 		case GHBounty:
 		case HNSBounty:
-			str = L"肉汁";
+			wcscpy_s(str, 256, L"肉汁");
 			break;
 		case Mechanic:
-			str = L"Mechanic"; // 已移除
+			wcscpy_s(str, 256, L"Mechanic"); // 已移除
 			break;
 		case Vigilante:
-			str = L"正义使者";
+			wcscpy_s(str, 256, L"正义使者");
 			break;
 		case Cannibal:
-			str = L"食鸟鸭";
+			wcscpy_s(str, 256, L"食鸟鸭");
 			break;
 		case Morphling:
 		case DNDMorphling:
-			str = L"变形";
+			wcscpy_s(str, 256, L"变形");
 			break;
 		case Sheriff:
-			str = L"警长";
+			wcscpy_s(str, 256, L"警长");
 			break;
 		case Silencer:
-			str = L"静语者";
+			wcscpy_s(str, 256, L"静语者");
 			break;
 		case Canadian:
-			str = L"加拿大鹅";
+			wcscpy_s(str, 256, L"加拿大鹅");
 			break;
 		case LoverDuck:
-			str = L"恋人[鸭]";
+			wcscpy_s(str, 256, L"恋人[鸭]");
 			break;
 		case LoverGoose:
-			str = L"恋人[鹅]";
+			wcscpy_s(str, 256, L"恋人[鹅]");
 			break;
 		case Vulture:
 		case DNDVulture:
-			str = L"秃鹫";
+			wcscpy_s(str, 256, L"秃鹫");
 			break;
 		case Professional:
-			str = L"专业杀手";
+			wcscpy_s(str, 256, L"专业杀手");
 			break;
 		case Spy:
-			str = L"间谍";
+			wcscpy_s(str, 256, L"间谍");
 			break;
 		case Mimic:
-			str = L"模仿者";
+			wcscpy_s(str, 256, L"模仿者");
 			break;
 		case Detective:
-			str = L"侦探";
+			wcscpy_s(str, 256, L"侦探");
 			break;
 		case Pigeon:
-			str = L"鸽子";
+			wcscpy_s(str, 256, L"鸽子");
 			break;
 		case Birdwatcher:
-			str = L"观鸟者";
+			wcscpy_s(str, 256, L"观鸟者");
 			break;
 		case Assassin:
-			str = L"刺客";
+			wcscpy_s(str, 256, L"刺客");
 			break;
 		case Falcon:
 		case DNDFalcon:
-			str = L"猎鹰";
+			wcscpy_s(str, 256, L"猎鹰");
 			break;
 		case Hitman:
-			str = L"雇佣杀手";
+			wcscpy_s(str, 256, L"雇佣杀手");
 			break;
 		case Bodyguard:
-			str = L"保镖";
+			wcscpy_s(str, 256, L"保镖");
 			break;
 		case Snitch:
-			str = L"告密者";
+			wcscpy_s(str, 256, L"告密者");
 			break;
 		case Politician:
-			str = L"政治家";
+			wcscpy_s(str, 256, L"政治家");
 			break;
 		case Locksmith:
-			str = L"锁匠";
+			wcscpy_s(str, 256, L"锁匠");
 			break;
 		case Mortician:
-			str = L"殡仪员";
+			wcscpy_s(str, 256, L"殡仪员");
 			break;
 		case Celebrity:
-			str = L"网红";
+			wcscpy_s(str, 256, L"网红");
 			break;
 		case Party:
-			str = L"派对";
+			wcscpy_s(str, 256, L"派对");
 			break;
 		case Demolitionist:
-			str = L"爆炸王";
+			wcscpy_s(str, 256, L"爆炸王");
 			break;
 		case DuelingDodo:
-			str = L"决斗呆呆鸟";
+			wcscpy_s(str, 256, L"决斗呆呆鸟");
 			break;
 		case ExploreGoose:
-			str = L"ExploreGoose"; // 未知
+			wcscpy_s(str, 256, L"ExploreGoose"); // 未知
 			break;
 		case TTVampire:
-			str = L"吸血鬼";
+			wcscpy_s(str, 256, L"吸血鬼");
 			break;
 		case TTPeasant:
-			str = L"村民";
+			wcscpy_s(str, 256, L"村民");
 			break;
 		case TTThrall:
 		case TTEThrall:
-			str = L"鬼奴";
+			wcscpy_s(str, 256, L"鬼奴");
 			break;
 		case Spectator:
-			str = L"旁观";
+			wcscpy_s(str, 256, L"旁观");
 			break;
 		case IdentityThief:
-			str = L"身份窃贼";
+			wcscpy_s(str, 256, L"身份窃贼");
 			break;
 		case Adventurer:
-			str = L"冒险家";
+			wcscpy_s(str, 256, L"冒险家");
 			break;
 		case Avenger:
-			str = L"复仇者";
+			wcscpy_s(str, 256, L"复仇者");
 			break;
 		case Ninja:
-			str = L"忍者";
+			wcscpy_s(str, 256, L"忍者");
 			break;
 		case Undertaker:
-			str = L"丧葬者";
+			wcscpy_s(str, 256, L"丧葬者");
 			break;
 		case Snoop:
-			str = L"Snoop"; // 已移除
+			wcscpy_s(str, 256, L"Snoop"); // 已移除
 			break;
 		case Esper:
-			str = L"超能力";
+			wcscpy_s(str, 256, L"超能力");
 			break;
 		case Invisibility:
-			str = L"隐形者";
+			wcscpy_s(str, 256, L"隐形者");
 			break;
 		case Astral:
-			str = L"星界行者";
+			wcscpy_s(str, 256, L"星界行者");
 			break;
 		case Pelican:
-			str = L"鹈鹕";
+			wcscpy_s(str, 256, L"鹈鹕");
 			break;
 		case TTMummy:
-			str = L"木乃伊";
+			wcscpy_s(str, 256, L"木乃伊");
 			break;
 		case SerialKiller:
-			str = L"连环杀手";
+			wcscpy_s(str, 256, L"连环杀手");
 			break;
 		case Engineer:
-			str = L"工程师";
+			wcscpy_s(str, 256, L"工程师");
 			break;
 		case Warlock:
-			str = L"术士";
+			wcscpy_s(str, 256, L"术士");
 			break;
 		case StreetUrchin:
-			str = L"流浪儿童";
+			wcscpy_s(str, 256, L"流浪儿童");
 			break;
 		case Tracker:
-			str = L"追踪器";
+			wcscpy_s(str, 256, L"追踪器");
 			break;
 		default:
-			str = L"未知";
+			wcscpy_s(str, 256, L"未知");
 			break;
 		}
 	}
@@ -323,7 +339,7 @@ namespace GameData
 
 	struct OtherPlayer_T
 	{
-		BOOL IsRoleSet;
+		BOOL HasPlayer;
 		WCHAR Name[128];
 		WCHAR Role[128];
 	};
@@ -334,13 +350,13 @@ namespace GameData
 	{
 		__try
 		{
-			PCHAR LocalPlayerPtr1 = *(PCHAR*)((PCHAR)GameAssembly + 0x3C3A608);
-			if (LocalPlayerPtr1)
+			PCHAR LocalPlayerClass = *(PCHAR*)((PCHAR)GameAssembly + Offset::GameAssembly::LocalPlayer);
+			if (LocalPlayerClass)
 			{
-				PCHAR LocalPlayerPtr2 = *(PCHAR*)(LocalPlayerPtr1 + 0xB8);
-				if (LocalPlayerPtr2)
+				PCHAR LocalPlayerStaticFields = *(PCHAR*)(LocalPlayerClass + Offset::Class::StaticFields);
+				if (LocalPlayerStaticFields)
 				{
-					PCHAR LocalPlayer = *(PCHAR*)(LocalPlayerPtr2 + 0x20);
+					PCHAR LocalPlayer = *(PCHAR*)(LocalPlayerStaticFields + Offset::LocalPlayer::Static_Instance);
 					if (LocalPlayer)
 					{
 						if (MenuData::Menu.NoFog)
@@ -382,40 +398,51 @@ namespace GameData
 				}
 			}
 
-			PCHAR OtherPlayerPtr1 = *(PCHAR*)((PCHAR)GameAssembly + 0x3C869B0);
-			if (OtherPlayerPtr1)
+			PCHAR PlayerControllerClass = *(PCHAR*)((PCHAR)GameAssembly + Offset::GameAssembly::PlayerController);
+			if (PlayerControllerClass)
 			{
-				PCHAR OtherPlayerPtr2 = *(PCHAR*)(OtherPlayerPtr1 + 0xB8);
-				if (OtherPlayerPtr2)
+				PCHAR PlayerControllerStaticFields = *(PCHAR*)(PlayerControllerClass + Offset::Class::StaticFields);
+				if (PlayerControllerStaticFields)
 				{
-					PCHAR OtherPlayerPtr3 = *(PCHAR*)(OtherPlayerPtr2 + 0x20);
-					if (OtherPlayerPtr3)
+					PCHAR PlayersListWithAgoraIDs = *(PCHAR*)(PlayerControllerStaticFields + Offset::PlayerController::Static_playersListWithAgoraIDs);
+					if (PlayersListWithAgoraIDs)
 					{
-						PCHAR OtherPlayerControllerArray = *(PCHAR*)(OtherPlayerPtr3 + 0x18);
-						if (OtherPlayerControllerArray)
+						PCHAR PlayerControllerArray = *(PCHAR*)(PlayersListWithAgoraIDs + 0x18);
+						if (PlayerControllerArray)
 						{
 							for (SIZE_T Index = 0; Index < 16; Index++)
 							{
-								PCHAR OtherPlayerController = *(PCHAR*)(OtherPlayerControllerArray + 0x30 + Index * 0x18);
+								PCHAR OtherPlayerController = *(PCHAR*)(PlayerControllerArray + 0x30 + Index * 0x18);
 								if (OtherPlayerController)
 								{
-									OtherPlayer[Index].IsRoleSet = *(PBOOL)(OtherPlayerController + Offset::PlayerController::playerRoleSet);
-									if (!OtherPlayer[Index].IsRoleSet)
-									{
-										continue;
-									}
+									OtherPlayer[Index].HasPlayer = TRUE;
 
 									PCHAR NickNameObject = *(PCHAR*)(OtherPlayerController + Offset::PlayerController::nickname);
-									INT NickNameLenght = *(PINT)(NickNameObject + 0x10);
-									if (NickNameLenght < 64)
+									if (NickNameObject)
 									{
-										WCHAR NickName[128] = { 0 };
-										memcpy(NickName, NickNameObject + 0x14, NickNameLenght * sizeof(WCHAR));
-										memcpy(OtherPlayer[Index].Name, NickName, 128 * sizeof(WCHAR));
+										INT NickNameLenght = *(PINT)(NickNameObject + 0x10);
+										if (NickNameLenght < 64)
+										{
+											WCHAR NickName[128] = { 0 };
+											memcpy(NickName, NickNameObject + 0x14, NickNameLenght * sizeof(WCHAR));
+											memcpy(OtherPlayer[Index].Name, NickName, 128 * sizeof(WCHAR));
+										}
 									}
 
+									BOOL IsRoleSet = *(PBOOL)(OtherPlayerController + Offset::PlayerController::playerRoleSet);
 									PCHAR RoleObject = *(PCHAR*)(OtherPlayerController + Offset::PlayerController::playerRole);
-									Role::GetNameById(*(PINT)(RoleObject + 0x10), OtherPlayer[Index].Role);
+									if (IsRoleSet && RoleObject)
+									{
+										Role::GetNameById(*(PINT)(RoleObject + 0x10), OtherPlayer[Index].Role);
+									}
+									else
+									{
+										Role::GetNameById(0, OtherPlayer[Index].Role);
+									}
+								}
+								else
+								{
+									OtherPlayer[Index].HasPlayer = FALSE;
 								}
 							}
 						}

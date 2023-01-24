@@ -23,6 +23,12 @@ ID3D11RenderTargetView* pRTView;
 
 HRESULT STDMETHODCALLTYPE PresentHookFunc(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 
+typedef VOID(*LOCALPLAYER_UPDATE_T)();
+
+LOCALPLAYER_UPDATE_T LocalPlayerUpdate = NULL;
+UCHAR LocalPlayerUpdateHookCode[5];
+UCHAR LocalPlayerUpdateOriginCode[5];
+
 VOID GooseGooseDuckMain()
 {
 	GameData::BaseModule = GetModuleHandle(NULL);
@@ -62,7 +68,7 @@ VOID GooseGooseDuckMain()
 
 	if (!ReJmpAddr)
 	{
-		MessageBox(NULL, L"DX初始化失败 Step: 3", L"错误", MB_ICONWARNING);
+		MessageBox(NULL, L"DX初始化失败: Hook1", L"错误", MB_ICONWARNING);
 		ExitProcess(0);
 	}
 
@@ -81,7 +87,7 @@ VOID GooseGooseDuckMain()
 	}
 	else
 	{
-		MessageBox(NULL, L"DX初始化失败 Step: 4", L"错误", MB_ICONWARNING);
+		MessageBox(NULL, L"DX初始化失败: Hook2", L"错误", MB_ICONWARNING);
 		ExitProcess(0);
 	}
 }
@@ -160,7 +166,7 @@ HRESULT STDMETHODCALLTYPE PresentHookFunc(IDXGISwapChain* pSwapChain, UINT SyncI
 
 			for (SIZE_T PlayerInfoIndex = 0; PlayerInfoIndex < 16; PlayerInfoIndex++)
 			{
-				if (!GameData::OtherPlayer[PlayerInfoIndex].IsRoleSet)
+				if (!GameData::OtherPlayer[PlayerInfoIndex].HasPlayer)
 				{
 					continue;
 				}
